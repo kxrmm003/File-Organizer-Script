@@ -12,46 +12,36 @@ FILE_TYPES = {
     'Videos': ['.mp4', '.mkv', '.avi'],
     'Archives': ['.zip', '.rar', '.tar', '.gz'],
     'Scripts': ['.py', '.js', '.html', '.css'],
-    'Others': []  # For unrecognized files
+    'Others': []
 }
 
 def organize_files(folder_path):
-    """
-    Organizes files in the given folder into subfolders based on file extensions.
-    """
     if not os.path.exists(folder_path):
         print("❌ Folder path does not exist!")
         return
 
-    # Loop through each file in the folder
     for file_name in os.listdir(folder_path):
         file_path = os.path.join(folder_path, file_name)
 
-        # Check if it's a file (not a folder)
         if os.path.isfile(file_path):
-            # Get file extension
             _, ext = os.path.splitext(file_name)
             moved = False
 
-            # Check which category the file belongs to
             for category, extensions in FILE_TYPES.items():
                 if ext.lower() in extensions:
                     move_file(file_path, os.path.join(folder_path, category))
                     moved = True
                     break
-
-            # If extension not found, move to 'Others'
+                    
             if not moved:
                 move_file(file_path, os.path.join(folder_path, 'Others'))
 
     print("✅ Files organized successfully!")
 
 def move_file(src_path, dest_folder):
-    """
-    Moves a file to the destination folder. Creates folder if it doesn't exist.
-    """
+    
     if not os.path.exists(dest_folder):
-        os.makedirs(dest_folder)  # Create folder if not exists
+        os.makedirs(dest_folder)
     shutil.move(src_path, dest_folder)
 
 # --------- Main Program ---------
